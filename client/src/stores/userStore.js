@@ -5,7 +5,7 @@ const initialState = {
     isAuthenticated: false,
     userId: -1,
     username: "",
-    booksInCart: [0]
+    booksInCart: []
 }
 
 const userStore = (state = initialState, action) => {
@@ -30,6 +30,11 @@ const userStore = (state = initialState, action) => {
                 ...state,
                 booksInCart: state.booksInCart.concat(action.payload)
             };
+            case bookActions.removeFromCart:
+                return {
+                    ...state,
+                    booksInCart: state.booksInCart.filter((item) => {return item != action.payload})
+                };
 
         default:
             break;

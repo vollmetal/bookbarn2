@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { addToCart } from "../stores/actiontypes/bookActions";
+import { addToCart, removeFromCart } from "../stores/actiontypes/bookActions";
 
 
 
@@ -20,9 +20,26 @@ function MainPage (props) {
             return book.genre.includes(bookFilter.sortGenre) && book.title.includes(bookFilter.sortName) && book.author.includes(bookFilter.sortAuthor)
         })
 
-        let shownBookElements = filteredBooks.map((book, index) => {
+        let shownBookElements = await filteredBooks.map((book, index) => {
             let bookName = `${book.title}-${index}`;
-            console.log(book.id)
+            let cartButton = (<div></div>)
+            if (props.isAuthenticated) {
+                console.log(props.cart.includes(book.id))
+                if(props.cart.includes(book.id)) {
+                    cartButton = (
+                        <div>
+                            <button className="addToCartButton" onClick={()=> {removeFromCart(book.id)}}>Remove from cart</button>
+                        </div>
+                    )
+                } else {
+                    cartButton = (
+                        <div>
+                            <button className="addToCartButton" onClick={()=> {addToCart(book.id)}}>Add to cart</button>
+                        </div>
+                    )
+                }
+            }
+            
             return (
                 <li key={bookName} className="bookItem">
                     <b className="bookTitle">{book.title}</b>
@@ -32,7 +49,7 @@ function MainPage (props) {
                         <span className="bookDetailSides">{book.publisher}</span>
                     </div>
                     <img className="bookImage" src={book.imageURL} alt=""></img>
-                    <button className="addToCartButton" onClick={()=> {addToCart(book.id)}}>Add to cart</button>
+                    {cartButton}
                     <button className="deleteButton" name={book.id} onClick={deleteBook} >Delete</button>
                 </li>
             )
@@ -58,7 +75,23 @@ function MainPage (props) {
     }
 
     const addToCart = (bookId) => {
-        props.addToCart(bookId)
+        if(props.cart.includes(bookId)) {
+
+        } else {
+            props.addToCart(bookId)
+            fetchBooks()
+        }
+        
+    }
+
+    const removeFromCart = (bookId) => {
+        if(props.cart.includes(bookId)) {
+            props.removeFromCart(bookId)
+            fetchBooks()
+        } else {
+            props.addToCart(bookId)
+        }
+        
     }
 
     const changeBookFilter = (e) => {
@@ -96,13 +129,15 @@ function MainPage (props) {
 const mapStateToProps = (state) => {
     return {
         userId: state.userId,
-        isAuthenticated: state.isAuthenticated
+        isAuthenticated: state.isAuthenticated,
+        cart: state.booksInCart
     }
 }
 
 const mapDispatch = (dispatch) => {
     return {
-        addToCart: (bookId) => (dispatch({type: addToCart, payload: bookId}))
+        addToCart: (bookId) => (dispatch({type: addToCart, payload: bookId})),
+        removeFromCart: (bookId) => (dispatch({type: removeFromCart, payload: bookId}))
     }
 
 }
