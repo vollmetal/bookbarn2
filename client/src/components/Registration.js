@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { userLogin } from "../stores/actiontypes/userHandle";
 import { connect } from 'react-redux'
+import { useNavigate } from "react-router-dom";
+import * as userCreators from '../stores/creators/userCreators'
 
 
 
 function Register (props) {
     const [tempUser, setTempUser] = useState({})
+    const navigate = useNavigate()
 
     const onInput = (e) => {
         setTempUser({
@@ -25,22 +27,23 @@ function Register (props) {
         const jsonUser = await sentForm.json()
         if(jsonUser.success) {
             props.onLogin({"userId":jsonUser.userId, "username": jsonUser.username})
+            navigate("/")
         }
         
     }
 
     return (
-        <div>
+        <div className='menuPage'>
             <h1>Register a new user</h1>
-            <div>
+            <div className="menuItem">
                 <label>username: </label>
                 <input type="text" name="username" onChange={onInput}/>
             </div>
-            <div>
+            <div className="menuItem">
                 <label>email: </label>
                 <input type="email" name="email" onChange={onInput}/>
             </div>
-            <div>
+            <div className="menuItem">
                 <label>password: </label>
                 <input type="password" name="password" onChange={onInput}/>
             </div>
@@ -52,7 +55,7 @@ function Register (props) {
 
 const mapDispatch = (dispatch) => {
     return {
-        onLogin: (user) => (dispatch({type: userLogin, payload: user}))
+        onLogin: (user) => (dispatch(userCreators.onLogin(user)))
     }
 
 }

@@ -1,16 +1,11 @@
 import {NavLink} from 'react-router-dom'
 import { connect } from 'react-redux'
-import { userLogout } from '../stores/actiontypes/userHandle'
 import { useEffect, useState } from 'react'
+import * as userCreators from '../stores/creators/userCreators'
 
 
 function Header (props) {
     const [displayElements, setDisplayElements] = useState({})
-    const [localInfo, setLocalInfo] = useState({cartSize: props.cart.length})
-
-    const updateCart = () => {
-
-    }
 
     const logUserOut = ()=> {
         props.logout()
@@ -18,7 +13,7 @@ function Header (props) {
 
     useEffect(() => {
         setUserElements(props.isAuthenticated)
-    }, [props.isAuthenticated, props.cart.length])
+    }, [props])
 
     const setUserElements = async (userState) => {
         const loggedinElements = (
@@ -34,8 +29,8 @@ function Header (props) {
 
         const loggedOutElements = (
             <div>
-                <div className="navButton"><NavLink to='/registration'>Register</NavLink></div>
-                <div className="navButton"><NavLink to='/login'>Login</NavLink></div>
+                <div className="navButton"><NavLink to='/registration'><button>Register</button></NavLink></div>
+                <div className="navButton"><NavLink to='/login'><button>Login</button></NavLink></div>
             </div>
         )
 
@@ -53,11 +48,11 @@ function Header (props) {
     }
 
     return (
-        <div>
+        <div className='headerBody'>
             <div className="navigation">
                     <h1>Book Barn</h1>
-                    <div><NavLink to = "/">Home</NavLink></div>
-                    <div><NavLink to = "/add-book">Add Book</NavLink></div>
+                    <div><NavLink to = "/"><button>Home</button> </NavLink></div>
+                    <div><NavLink to = "/add-book"><button>Add Book</button></NavLink></div>
                 </div>
                 <div className="userInfo">
                     <div className="userNavButtons">
@@ -70,15 +65,15 @@ function Header (props) {
 
 const mapStateToProps = (state) => {
     return {
-        isAuthenticated: state.isAuthenticated,
-        username: state.username,
-        cart: state.booksInCart
+        isAuthenticated: state.userReducer.isAuthenticated,
+        username: state.userReducer.username,
+        cart: state.bookReducer.booksInCart
     }
 }
 
 const mapDispatch = (dispatch) => {
     return {
-        logout: (user) => (dispatch({type: userLogout, payload: ""}))
+        logout: () => (dispatch(userCreators.onLogout()))
     }
 
 }

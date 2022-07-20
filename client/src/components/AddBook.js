@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { userLogin } from "../stores/actiontypes/userHandle";
 import { connect } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 
 
 
-function AddBook (props) {
-    const [newBook, setNewBook] = useState({imageURL: ""})
+function AddBook(props) {
+    const [newBook, setNewBook] = useState({ imageURL: "" })
+    const navigate = useNavigate()
 
     const onInput = (e) => {
         setNewBook({
@@ -23,40 +24,44 @@ function AddBook (props) {
             body: JSON.stringify(newBook)
         })
         const jsonUser = await sentForm.json()
-        if(jsonUser.success) {
-            
+        if (jsonUser.success) {
+            navigate("/")
         }
-        
+
+
     }
 
     return (
-        <div>
+        <div className="menuPage">
             <h1>Add a New Book</h1>
-            <div>
+            <div className="menuItem">
                 <label>title: </label>
-                <input type="text" name="title" onChange={onInput}/>
+                <input type="text" name="title" onChange={onInput} />
             </div>
-            <div>
+            <div className="menuItem">
                 <label>year: </label>
-                <input type="number" name="year" onChange={onInput}/>
+                <input type="number" name="year" onChange={onInput} />
             </div>
-            <div>
-                <label>author: </label>
-                <input type="text" name="author" onChange={onInput}/>
+            <div className="newBookDetails">
+                <div className="menuItem">
+                    <label>author: </label>
+                    <input type="text" name="author" onChange={onInput} />
+                </div>
+                <div className="menuItem">
+                    <label>publisher: </label>
+                    <input type="text" name="publisher" onChange={onInput} />
+                </div>
+                <div className="menuItem">
+                    <label>genre: </label>
+                    <input type="text" name="genre" onChange={onInput} />
+                </div>
             </div>
-            <div>
-                <label>publisher: </label>
-                <input type="text" name="publisher" onChange={onInput}/>
-            </div>
-            <div>
-                <label>genre: </label>
-                <input type="text" name="genre" onChange={onInput}/>
-            </div>
-            <div>
+
+            <div className="menuItem">
                 <label>book cover url: </label>
-                <input type="text" name="imageURL" onChange={onInput}/>
+                <input type="text" name="imageURL" onChange={onInput} />
             </div>
-            <button onClick={addNewBook}>Login</button>
+            <button onClick={addNewBook}>Add book</button>
 
         </div>
     )
@@ -64,8 +69,8 @@ function AddBook (props) {
 
 const mapStateToProps = (state) => {
     return {
-        userId: state.userId,
-        isAuthenticated: state.isAuthenticated
+        userId: state.userReducer.userId,
+        isAuthenticated: state.userReducer.isAuthenticated
     }
 }
 

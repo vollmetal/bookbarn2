@@ -3,16 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {createStore} from 'redux';
+import {combineReducers, createStore} from 'redux';
 import {Provider} from 'react-redux';
-import userStore from './stores/userStore';
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
 import MainPage from './components/MainPage';
 import Registration from './components/Registration';
 import Login from './components/Login';
 import AddBook from './components/AddBook';
+import bookReducer from './stores/reducers/bookReducer';
+import userReducer from './stores/reducers/userReducer';
 
-const store = createStore(userStore, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+const rootReducer = combineReducers({
+  bookReducer: bookReducer,
+  userReducer: userReducer
+})
+
+const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

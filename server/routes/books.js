@@ -34,7 +34,7 @@ bookRouter.post('/new', async (req, res) => {
         ownerId: req.body.userID
     })
     const books = await newBook.save()
-    res.json('Success!')
+    res.json({success: true, message: `Success!`})
     
 })
 
@@ -48,6 +48,7 @@ bookRouter.delete('/delete', async (req, res) => {
           id: req.body.id,
         },
       });
+      res.json({success: true, message: `Success!`})
 })
 
 

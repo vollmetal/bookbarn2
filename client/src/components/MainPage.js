@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { addToCart, removeFromCart } from "../stores/actiontypes/bookActions";
+import * as bookCreators from '../stores/creators/bookCreators'
 
 
 
@@ -8,7 +8,7 @@ function MainPage (props) {
     const [bookFilter, setBookFilter] = useState({view: "all",sortGenre: "", sortName: "", sortAuthor: "", displayBooks: [], tempCart: []})
 
 
-    useEffect(() => {fetchBooks()}, [])
+    useEffect(() => {fetchBooks()}, [props])
 
     const fetchBooks = async () => {
         let bookList = []
@@ -17,7 +17,7 @@ function MainPage (props) {
             bookList = await rawBookList.json()
 
         let filteredBooks = await bookList.filter((book) => {
-            return book.genre.includes(bookFilter.sortGenre) && book.title.includes(bookFilter.sortName) && book.author.includes(bookFilter.sortAuthor)
+            return book.genre.toLowerCase().includes(bookFilter.sortGenre.toLowerCase()) && book.title.toLowerCase().includes(bookFilter.sortName.toLowerCase()) && book.author.toLowerCase().includes(bookFilter.sortAuthor.toLowerCase())
         })
 
         let shownBookElements = await filteredBooks.map((book, index) => {
@@ -44,6 +44,7 @@ function MainPage (props) {
                 <li key={bookName} className="bookItem">
                     <b className="bookTitle">{book.title}</b>
                     <i className="bookYear">{book.year}</i>
+                    <label>genre: {book.genre}</label>
                     <div className="bookDetails">
                         <span className="bookDetailSides">By: {book.author}</span>
                         <span className="bookDetailSides">{book.publisher}</span>
@@ -62,6 +63,8 @@ function MainPage (props) {
         })
         
       }
+
+      
     const deleteBook = async (e) => {
         const deleteAction = await fetch('http://localhost:4200/books/delete', {
             method: "DELETE",
@@ -70,7 +73,11 @@ function MainPage (props) {
             },
             body: JSON.stringify({"id": e.target.name})
         })
-        fetchBooks()
+        const response = await deleteAction.json()
+        if(response.success) {
+            fetchBooks()
+        }
+        
 
     }
 
@@ -79,7 +86,6 @@ function MainPage (props) {
 
         } else {
             props.addToCart(bookId)
-            fetchBooks()
         }
         
     }
@@ -87,9 +93,8 @@ function MainPage (props) {
     const removeFromCart = (bookId) => {
         if(props.cart.includes(bookId)) {
             props.removeFromCart(bookId)
-            fetchBooks()
         } else {
-            props.addToCart(bookId)
+
         }
         
     }
@@ -122,22 +127,23 @@ function MainPage (props) {
                 {bookFilter.displayBooks}
             </ul>
         </div>
+
         
     )
 }
 
 const mapStateToProps = (state) => {
     return {
-        userId: state.userId,
-        isAuthenticated: state.isAuthenticated,
-        cart: state.booksInCart
+        userId: state.userReducer.userId,
+        isAuthenticated: state.userReducer.isAuthenticated,
+        cart: state.bookReducer.booksInCart
     }
 }
 
 const mapDispatch = (dispatch) => {
     return {
-        addToCart: (bookId) => (dispatch({type: addToCart, payload: bookId})),
-        removeFromCart: (bookId) => (dispatch({type: removeFromCart, payload: bookId}))
+        addToCart: (bookId) => (dispatch(bookCreators.addToCart(bookId))),
+        removeFromCart: (bookId) => (dispatch(bookCreators.removeFromCart(bookId)))
     }
 
 }

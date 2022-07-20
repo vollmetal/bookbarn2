@@ -1,4 +1,5 @@
 body {
+  background-color: lightgray;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -29,7 +30,7 @@ code {
   border-style: solid;
   background-color: tan;
   padding: 0.5rem;
-  width: 400px;
+  width: 200px;
 }
 
 .searchBars {
@@ -71,6 +72,7 @@ code {
   margin: 30px;
   display: flex;
   justify-content: space-between;
+  background-color: tan;
 }
 
 .navigation {
@@ -93,6 +95,22 @@ code {
 }
 
 .navButton {
+  display: flex;
+  margin: 10px;
+}
+
+.newBookDetails {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.menuPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menuItem {
   display: flex;
   margin: 10px;
 }
