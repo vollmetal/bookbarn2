@@ -1,8 +1,14 @@
 import {NavLink} from 'react-router-dom'
 import { connect } from 'react-redux'
+import { userLogout } from '../stores/actiontypes/userHandle'
 
 
 function Header (props) {
+
+    const logUserOut = ()=> {
+        props.logout()
+    }
+
     return (
         <div>
             <div className="navigation">
@@ -15,6 +21,7 @@ function Header (props) {
                     <div className="userNavButtons">
                         <div className="navButton"><NavLink to='/registration'>Register</NavLink></div>
                         <div className="navButton"><NavLink to='/login'>Login</NavLink></div>
+                        <div><button onClick={logUserOut}>Logout</button></div>
                     </div>
                 </div>
         </div>
@@ -27,4 +34,11 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(Header);
+const mapDispatch = (dispatch) => {
+    return {
+        logout: (user) => (dispatch({type: userLogout, payload: ""}))
+    }
+
+}
+
+export default connect(mapStateToProps, mapDispatch)(Header);

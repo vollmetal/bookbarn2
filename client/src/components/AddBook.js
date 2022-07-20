@@ -5,26 +5,26 @@ import { connect } from 'react-redux'
 
 
 function AddBook (props) {
-    const [tempUser, setTempUser] = useState({userID: props.userId, imageURL: ""})
+    const [newBook, setNewBook] = useState({imageURL: ""})
 
     const onInput = (e) => {
-        setTempUser({
-            ...tempUser,
+        setNewBook({
+            ...newBook,
             [e.target.name]: e.target.value
         })
     }
 
-    const loginUser = async () => {
+    const addNewBook = async () => {
         const sentForm = await fetch('http://localhost:4200/books/new', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(tempUser)
+            body: JSON.stringify(newBook)
         })
         const jsonUser = await sentForm.json()
         if(jsonUser.success) {
-            props.onLogin({"userId":jsonUser.userId, "username": jsonUser.username})
+            
         }
         
     }
@@ -56,7 +56,7 @@ function AddBook (props) {
                 <label>book cover url: </label>
                 <input type="text" name="imageURL" onChange={onInput}/>
             </div>
-            <button onClick={loginUser}>Login</button>
+            <button onClick={addNewBook}>Login</button>
 
         </div>
     )

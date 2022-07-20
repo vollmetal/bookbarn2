@@ -58,11 +58,7 @@ function MainPage (props) {
     }
 
     const addToCart = (bookId) => {
-        setBookFilter({
-            ...bookFilter,
-            tempCart: bookFilter.tempCart.push(bookId)
-        })
-        props.addToCart(bookFilter.tempCart)
+        props.addToCart(bookId)
     }
 
     const changeBookFilter = (e) => {

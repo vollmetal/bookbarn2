@@ -28,7 +28,7 @@ const userStore = (state = initialState, action) => {
         case bookActions.addToCart:
             return {
                 ...state,
-                booksInCart: action.payload
+                booksInCart: state.booksInCart.concat(action.payload)
             };
 
         default:
