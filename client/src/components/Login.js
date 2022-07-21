@@ -17,18 +17,8 @@ function Login (props) {
     }
 
     const loginUser = async () => {
-        const sentForm = await fetch('http://localhost:4200/user/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(tempUser)
-        })
-        const jsonUser = await sentForm.json()
-        if(jsonUser.success) {
-            props.onLogin({"userId":jsonUser.userId, "username": jsonUser.username})
-            navigate("/")
-        }
+        await props.onLogin(tempUser)
+        navigate("/")
         
     }
 

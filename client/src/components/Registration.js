@@ -26,7 +26,7 @@ function Register (props) {
         })
         const jsonUser = await sentForm.json()
         if(jsonUser.success) {
-            props.onLogin({"userId":jsonUser.userId, "username": jsonUser.username})
+            props.onLogin({"email":jsonUser.email, "password": jsonUser.password})
             navigate("/")
         }
         
