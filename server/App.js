@@ -15,6 +15,10 @@ app.use('/user', userRoutes)
 const bookRoutes = require('./routes/books')
 app.use('/books', bookRoutes)
 
+const userBookRouter = require('./routes/userBookRoutes')
+const authenticate = require('./middleware/authentication')
+app.use('/userInfo', userBookRouter, authenticate)
+
 
 app.listen(4200, () => {
     console.log('server start!')

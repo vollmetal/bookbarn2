@@ -12,13 +12,15 @@ export const onLogin = (user) => {
         })
         const jsonUser = await sentForm.json()
         if(jsonUser.success) {
-            dispatch({type: userActions.userLogin, payload: {"userId":jsonUser.userId, "username": jsonUser.username}})
+            localStorage.setItem('userToken', jsonUser.token)
+            dispatch({type: userActions.userLogin, payload: {"username": jsonUser.username}})
             
         }
     }
  }
 
  export const onLogout = () => {
+    localStorage.removeItem('userToken')
     return {
         type: userActions.userLogout
     }

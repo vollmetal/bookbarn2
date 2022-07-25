@@ -1,5 +1,6 @@
 const express = require('express');
 const userRouter = express.Router();
+const jwt = require('jsonwebtoken');
 
 const SALT_ROUNDS = 10;
 
@@ -36,11 +37,14 @@ userRouter.post('/login', async (req, res) => {
         if(retrievedUser != null) {
             bcrypt.compare(req.body.password, retrievedUser.password, (error, result) => {
                 if(result) {
-                    res.json({success: true, username: retrievedUser.username, userId: retrievedUser.id})
+                    const token = jwt.sign({id: retrievedUser.id}, 'LINUSTORVALDS')
+                    res.json({success: true, username: retrievedUser.username, token: token})
                 } else {
                     res.json({success: false, message: error})
                 }
             })
+        } else {
+            res.json({success: false, message: 'User does not exist'})
         }
 })
 

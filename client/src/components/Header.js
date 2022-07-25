@@ -27,6 +27,13 @@ function Header (props) {
             </div>
         )
 
+        const loggedinBookElements = (
+            <div>
+                <div><NavLink to = "/add-book"><button>Add Book</button></NavLink></div>
+                <div><NavLink to = "/usercart"><button>View Checkout</button></NavLink></div>
+            </div>
+        )
+
         const loggedOutElements = (
             <div>
                 <div className="navButton"><NavLink to='/registration'><button>Register</button></NavLink></div>
@@ -37,12 +44,14 @@ function Header (props) {
         if (userState) {
             setDisplayElements({
                 ...displayElements,
-                userElements: loggedinElements
+                userElements: loggedinElements,
+                bookElements: loggedinBookElements
             })
         } else {
             setDisplayElements({
                 ...displayElements,
-                userElements: loggedOutElements
+                userElements: loggedOutElements,
+                bookElements: <div></div>
             })
         }
     }
@@ -52,7 +61,8 @@ function Header (props) {
             <div className="navigation">
                     <h1>Book Barn</h1>
                     <div><NavLink to = "/"><button>Home</button> </NavLink></div>
-                    <div><NavLink to = "/add-book"><button>Add Book</button></NavLink></div>
+                    {displayElements.bookElements}
+                    
                 </div>
                 <div className="userInfo">
                     <div className="userNavButtons">

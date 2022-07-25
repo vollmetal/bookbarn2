@@ -13,6 +13,7 @@ import Login from './components/Login';
 import AddBook from './components/AddBook';
 import bookReducer from './stores/reducers/bookReducer';
 import userReducer from './stores/reducers/userReducer';
+import CartPage from './components/CartPage';
 
 const rootReducer = combineReducers({
   bookReducer: bookReducer,
@@ -31,6 +32,7 @@ root.render(
     <App>
       <Routes>
         <Route path="/" element = {<MainPage />}/>
+        <Route path="/usercart" element = {<CartPage />}/>
         <Route path="/registration" element = {<Registration />}/>
         <Route path="/login" element = {<Login />}/>
         <Route path='/add-book' element = {<AddBook/>}/>
