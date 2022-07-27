@@ -12,11 +12,16 @@ const bookReducer = (state = initialState, action) => {
                 ...state,
                 booksInCart: state.booksInCart.concat(action.payload)
             };
-            case bookActions.removeFromCart:
-                return {
-                    ...state,
-                    booksInCart: state.booksInCart.filter((item) => {return item != action.payload})
-                };
+        case bookActions.removeFromCart:
+            return {
+                ...state,
+                booksInCart: state.booksInCart.filter((item) => { return item != action.payload })
+            };
+        case bookActions.newCart:
+            return {
+                ...state,
+                booksInCart: action.payload
+            };
 
         default:
             break;

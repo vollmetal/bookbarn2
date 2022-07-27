@@ -48,4 +48,37 @@ userRouter.post('/login', async (req, res) => {
         }
 })
 
+userRouter.get('/decode', async (req, res) => {
+    const headers = req.headers['authorization']
+    console.log(headers)
+    if(headers) {
+        console.log('header found!')
+        const userToken = headers.split(' ')[1]
+        jwt.verify(userToken, 'LINUSTORVALDS', function (err, decoded) {
+
+            if(err) {
+                res.json({success: false, message: 'Unable to authenticate!'})
+            } else {
+                console.log('token authenticated!')
+                const userId = decoded.id 
+                models.Users.findOne({
+                    where: {
+                        id: userId
+                    }
+                }).then(async user => {
+                    if(user) {
+                        // user is authenticated 
+                        
+                    res.json(user)
+                    } else {
+                        res.json({success: false, message: 'Unable to authenticate!'})
+                    }
+                })
+            }
+
+        })
+    }
+    
+})
+
 module.exports = userRouter;

@@ -11,15 +11,19 @@ function CartPage (props) {
     useEffect(() => {fetchBooks()}, [props])
 
     const fetchBooks = async () => {
-        let bookList = []
-
-        const rawBookList = await fetch('http://localhost:4200/userInfo/cart/', {
+        const userInfo = await fetch('http://localhost:4200/user/decode', {
             method: 'GET',
             headers: {
                 'authorization': `IMPORTANT ${localStorage.getItem('userToken')}`
             }
         })
-            bookList = await rawBookList.json()
+        const user = await userInfo.json()
+        console.log(user)
+
+        const getCart = getUserCart(user)
+        const bookList = await getCartList(user)
+        console.log(bookList)
+
 
         let filteredBooks = await bookList.filter((book) => {
             return book.genre.toLowerCase().includes(bookFilter.sortGenre.toLowerCase()) && book.title.toLowerCase().includes(bookFilter.sortName.toLowerCase()) && book.author.toLowerCase().includes(bookFilter.sortAuthor.toLowerCase())
@@ -51,6 +55,32 @@ function CartPage (props) {
             displayBooks: shownBookElements
         })
         
+      }
+
+      const getCartList = async (user) => {
+        {
+            const rawBookList = await fetch('http://localhost:4200/userInfo/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+                const bookList = await rawBookList.json()
+                return bookList
+          }
+      }
+
+      const getUserCart = async (user) => {
+        const rawBookList = await fetch('http://localhost:4200/userInfo/cart/get', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            const bookList = await rawBookList.json()
+            return bookList
       }
 
       

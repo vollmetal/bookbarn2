@@ -2,7 +2,6 @@ import * as loginActions from "../actiontypes/userHandle";
 
 const initialState = {
     isAuthenticated: false,
-    userId: -1,
     username: ""
 }
 
@@ -12,15 +11,12 @@ const userReducer = (state = initialState, action) => {
         case loginActions.userLogin:
             return {
                 ...state,
-                userId: action.payload.userId,
                 username: action.payload.username,
                 isAuthenticated: true
             };
         case loginActions.userLogout:
             return {
-                ...state,
-                userId: -1,
-                username: "",
+                ...state,username: "",
                 isAuthenticated: false
             };
         

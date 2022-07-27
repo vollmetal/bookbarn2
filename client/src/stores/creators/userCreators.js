@@ -19,6 +19,24 @@ export const onLogin = (user) => {
     }
  }
 
+ export const loginWithToken = (token) => {
+    return async (dispatch) => {
+        const userInfo = await fetch('http://localhost:4200/user/decode', {
+            method: 'GET',
+            headers: {
+                'authorization': `IMPORTANT ${token}`
+            }
+        })
+        const jsonUser = await userInfo.json()
+        
+        if(jsonUser.success) {
+            console.log(jsonUser)
+            dispatch({type: userActions.userLogin, payload: {"username": jsonUser.username}})
+            
+        }
+    }
+ }
+
  export const onLogout = () => {
     localStorage.removeItem('userToken')
     return {

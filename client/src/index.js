@@ -14,6 +14,7 @@ import AddBook from './components/AddBook';
 import bookReducer from './stores/reducers/bookReducer';
 import userReducer from './stores/reducers/userReducer';
 import CartPage from './components/CartPage';
+import * as userCreators from './stores/creators/userCreators'
 
 const rootReducer = combineReducers({
   bookReducer: bookReducer,
@@ -23,6 +24,8 @@ const rootReducer = combineReducers({
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
